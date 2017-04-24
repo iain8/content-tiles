@@ -1,31 +1,34 @@
-// TODO: tests
-// TODO: npm
-// TODO: think my doc comments are effed up
+/**
+ * content-tiles.js
+ * 
+ * A library for arranging content into a neat grid without losing your aspect ratios
+ *
+ */
 
-(function() {
+(function () {
   /**
    * Get an attribute as an integer
-   * 
+   *
    * @param {*} el Element on which to get attribute
    * @param {*} attr Attribute name
-   * 
+   *
    * @return int Integer value of attribute
    */
   function getAttrAsInt(el, attr) {
-    return parseInt(el.getAttribute(attr));
-  };
+    return parseInt(el.getAttribute(attr), 10);
+  }
 
   /**
    * Get an attribute as a float
-   * 
+   *
    * @param {*} el Element on which to get attribute
    * @param {*} attr Attribute name
-   * 
+   *
    * @return float Float value of attribute
    */
   function getAttrAsFloat(el, attr) {
     return parseFloat(el.getAttribute(attr));
-  };
+  }
 
   var ContentTiles = {
     // width of border around elements (px)
@@ -54,10 +57,10 @@
 
     /**
      * Initialise the content grid and draw it
-     * 
+     *
      * @param options array Initialisation options for plugin
      */
-    init: function(options) {
+    init: function (options) {
       // set up instance vars
       var opts = options || {};
 
@@ -68,6 +71,12 @@
       this.targetHeight = opts.targetHeight || this.targetHeight;
 
       this.container = document.getElementsByClassName(this.containerClass)[0];
+
+      // exit if container not found
+      if (!this.container) {
+        return;
+      }
+
       this.maxWidth = this.container.offsetWidth;
       this.targetHeight = getAttrAsInt(this.container, 'data-row-height');
 
@@ -91,7 +100,7 @@
     /**
      * Populate content and adjust rows to fit
      */
-    populate: function() {
+    populate: function () {
       var rows = this.buildRows();
       var rowCount = rows.length;
 
@@ -103,10 +112,11 @@
 
         if (imageCount > 1 && difference < this.borderWidth) {
           var offset = difference / imageCount;
+          var rowsCount = rows[i].length;
 
-          rows[i].forEach(function (el) {
-            el.setAttribute('data-width', getAttrAsFloat(el, 'data-width') + offset);
-          });
+          for (var j = 0; j < rowsCount; ++j) {
+            rows[i][j].setAttribute('data-width', getAttrAsFloat(rows[i][j], 'data-width') + offset);
+          }
 
           var lastEl = rows[i][imageCount - 1];
           lastEl.setAttribute('data-width', getAttrAsFloat(lastEl, 'data-width') + (this.maxWidth - this.getTotalWidth(rows[i])));
@@ -118,7 +128,7 @@
 
     /**
      * Build rows from content items
-     * 
+     *
      * @return array Content organised into rows
      */
     buildRows: function () {
@@ -166,16 +176,16 @@
 
     /**
      * Calculate the total width of a row of items
-     * 
+     *
      * @param array row A row of items
-     * 
+     *
      * @return int Width
      */
-    getTotalWidth: function(row) {
+    getTotalWidth: function (row) {
       var width = 0;
       var rowLength = row.length;
 
-      for (var i = 0; i < row.length; ++i) {
+      for (var i = 0; i < rowLength; ++i) {
         width += getAttrAsFloat(row[i], 'data-width');
       }
 
@@ -206,7 +216,7 @@
      * Possibly redundant render function!
      */
     render: function (rows) {
-      Array.prototype.forEach.call(document.getElementsByClassName(this.itemClass), function(el) {
+      Array.prototype.forEach.call(document.getElementsByClassName(this.itemClass), function (el) {
         el.parentNode.removeChild(el);
       });
 
@@ -250,13 +260,11 @@
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = ContentTiles;
+  } else if (typeof define === 'function' && define.amd) {
+    define([], function () {
+      return ContentTiles;
+    });
   } else {
-    if (typeof define === 'function' && define.amd) {
-      define([], function() {
-        return ContentTiles;
-      });
-    } else {
-      window.ContentGrid = ContentTiles;
-    }
+    window.ContentGrid = ContentTiles;
   }
 })();
