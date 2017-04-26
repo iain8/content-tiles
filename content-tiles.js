@@ -34,23 +34,14 @@
     // width of border around elements (px)
     borderWidth: 0,
 
-    // container of content rows
-    container: null,
-
     // class on container element
     containerClass: 'content-tiles',
-
-    // row data
-    data: [],
 
     // inner classes also to be resized e.g. image, overlay
     innerClasses: [],
 
     // class of content element
     itemClass: 'content-item',
-
-    // maximum width of this.container (px)
-    maxWidth: 0,
 
     // class of the rows in which content will be arranged
     rowClass: 'content-row',
@@ -71,46 +62,55 @@
       this.containerClass = opts.containerClass || this.containerClass;
       this.innerClasses = opts.innerClasses || this.innerClasses;
       this.itemClass = opts.itemClass || this.itemClass;
+
+      // TODO: this is just getting overwritten right now
       this.targetHeight = opts.targetHeight || this.targetHeight;
 
-      this.container = document.getElementsByClassName(this.containerClass)[0];
+      var containers = document.getElementsByClassName(this.containerClass);
 
-      // exit if container not found
-      if (!this.container) {
+      // exit if container not found TODO: no longer necessary?
+      if (containers.length === 0) {
         return;
       }
 
-      this.maxWidth = this.container.offsetWidth;
-      this.targetHeight = getAttrAsInt(this.container, 'data-row-height');
+      for (var i = 0; i < containers.length; ++i) {
+        var container = containers[i];
+        var data = [];
+        var maxWidth = container.offsetWidth;
 
-      var content = this.container.getElementsByClassName('content-item');
-      var dataLength = content.length;
+        this.targetHeight = getAttrAsInt(container, 'data-row-height');
 
-      // calculate width and set initial dimensions
-      for (var i = 0; i < dataLength; ++i) {
-        var width = getAttrAsInt(content[i], 'data-width');
-        var height = getAttrAsInt(content[i], 'data-height');
+        var content = container.getElementsByClassName('content-item');
+        var dataLength = content.length;
 
-        content[i].setAttribute('data-width', width * (this.targetHeight / height));
-        content[i].setAttribute('data-height', this.targetHeight);
+        // calculate width and set initial dimensions
+        for (var j = 0; j < dataLength; ++j) {
+          var width = getAttrAsInt(content[j], 'data-width');
+          var height = getAttrAsInt(content[j], 'data-height');
 
-        this.data.push(content[i]);
+          content[j].setAttribute('data-width', width * (this.targetHeight / height));
+          content[j].setAttribute('data-height', this.targetHeight);
+
+          data.push(content[j]);
+        }
+
+        var rows = this.populate(container, data, maxWidth);
+
+        this.render(container, rows);
       }
-
-      this.populate();
     },
 
     /**
      * Populate content and adjust rows to fit
      */
-    populate: function () {
-      var rows = this.buildRows();
+    populate: function (container, data, maxWidth) {
+      var rows = this.buildRows(data, maxWidth);
       var rowCount = rows.length;
 
       for (var i = 0; i < rowCount; ++i) {
-        rows[i] = this.fitImagesInRow(rows[i]);
+        rows[i] = this.fitImagesInRow(rows[i], maxWidth);
 
-        var difference = this.maxWidth - this.getTotalWidth(rows[i]);
+        var difference = maxWidth - this.getTotalWidth(rows[i]);
         var imageCount = rows[i].length;
 
         if (imageCount > 1 && difference < this.borderWidth) {
@@ -122,11 +122,11 @@
           }
 
           var lastEl = rows[i][imageCount - 1];
-          lastEl.setAttribute('data-width', getAttrAsFloat(lastEl, 'data-width') + (this.maxWidth - this.getTotalWidth(rows[i])));
+          lastEl.setAttribute('data-width', getAttrAsFloat(lastEl, 'data-width') + (maxWidth - this.getTotalWidth(rows[i])));
         }
       }
 
-      this.render(rows);
+      return rows;
     },
 
     /**
@@ -134,12 +134,11 @@
      *
      * @return array Content organised into rows
      */
-    buildRows: function () {
+    buildRows: function (data, maxWidth) {
       var currentRow = 0;
       var currentWidth = 0;
       var rows = [];
-      var maxWidth = this.maxWidth;
-      var dataLength = this.data.length;
+      var dataLength = data.length;
 
       for (var i = 0; i < dataLength; ++i) {
         if (currentWidth >= maxWidth) {
@@ -151,9 +150,9 @@
           rows[currentRow] = [];
         }
 
-        rows[currentRow].push(this.data[i]);
+        rows[currentRow].push(data[i]);
 
-        currentWidth += getAttrAsFloat(this.data[i], 'data-width');
+        currentWidth += getAttrAsFloat(data[i], 'data-width');
       }
 
       return rows;
@@ -165,10 +164,10 @@
      * @param array row
      * @return array Row
      */
-    fitImagesInRow: function (row) {
+    fitImagesInRow: function (row, maxWidth) {
       var rowCount = row.length;
 
-      while (this.getTotalWidth(row) > this.maxWidth) {
+      while (this.getTotalWidth(row) > maxWidth) {
         for (var i = 0; i < rowCount; ++i) {
           row[i] = this.shrinkElement(row[i]);
         }
@@ -218,8 +217,9 @@
     /**
      * Possibly redundant render function!
      */
-    render: function (rows) {
-      Array.prototype.forEach.call(document.getElementsByClassName(this.itemClass), function (el) {
+    render: function (container, rows) {
+      Array.prototype.forEach.call(container.getElementsByClassName(this.itemClass), function (el) {
+        //
         el.parentNode.removeChild(el);
       });
 
@@ -257,7 +257,7 @@
         fragment.appendChild(newRow);
       }
 
-      this.container.appendChild(fragment);
+      container.appendChild(fragment);
     },
   };
 
