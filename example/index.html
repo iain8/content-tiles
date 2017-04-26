@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>content-tiles demo</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css" integrity="sha256-itWEYdFWzZPBG78bJOOiQIn06QCgN/F0wMDcC4nOhxY=" crossorigin="anonymous">
+
+    <style>
+    .callout {
+      display: inline-block;
+      overflow: hidden;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="small-9 large-centered columns">
+        <h1>content-tiles demo</h1>
+
+        <p>This page shows some demos of the <a href="#">content-tiles.js</a> library. Please
+        see the <a href="#">README</a> for full instructions.</p>
+
+        <br>
+
+        <h3>Images</h3>
+
+        <div class="content-tiles" data-row-height="200">
+          <img src="http://www.placecage.com/800/600" class="content-item" data-height="600" data-width="800">
+          <img src="http://www.placecage.com/600/800" class="content-item" data-height="800" data-width="600">
+          <img src="http://www.placecage.com/800/600" class="content-item" data-height="600" data-width="800">
+          <img src="http://www.placecage.com/500/500" class="content-item" data-height="500" data-width="500">
+        </div>
+
+        <hr>
+
+        <br>
+
+        <h3>Other content</h3>
+
+        <hr>
+
+        <div class="content-tiles" data-row-height="300">
+          <div class="content-item callout success" data-height="600" data-width="800">
+            <h4>Some content</h4>
+            <p>Blah blah</p>
+          </div>
+          <div class="content-item callout success" data-height="800" data-width="600"></div>
+          <div class="content-item callout success" data-height="600" data-width="800"></div>
+          <div class="content-item callout success" data-height="800" data-width="600"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../content-tiles.js"></script>
+    <script>
+      ContentGrid.init({
+
+      });
+    </script>
+  </body>
+</html>

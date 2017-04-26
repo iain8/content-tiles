@@ -32,13 +32,13 @@
 
   var ContentTiles = {
     // width of border around elements (px)
-    borderWidth: 10,
+    borderWidth: 0,
 
     // container of content rows
     container: null,
 
     // class on container element
-    containerClass: 'content-grid',
+    containerClass: 'content-tiles',
 
     // row data
     data: [],
@@ -51,6 +51,9 @@
 
     // maximum width of this.container (px)
     maxWidth: 0,
+
+    // class of the rows in which content will be arranged
+    rowClass: 'content-row',
 
     // target row height (px)
     targetHeight: 400,
@@ -227,9 +230,9 @@
         var newRow = document.createElement('div');
 
         if (newRow.classList) {
-          newRow.classList.add('row')
+          newRow.classList.add(this.rowClass)
         } else {
-          newRow.className = 'row';
+          newRow.className = this.rowClass;
         }
 
         var rowLength = rows[i].length;
