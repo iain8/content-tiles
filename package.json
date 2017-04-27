@@ -5,11 +5,14 @@
   "main": "content-tiles.js",
   "scripts": {
     "build": "uglifyjs ./src/content-tiles.js -o ./dist/content-tiles.min.js -c",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "chai": "~3.5.0",
+    "jsdom": "~10.0.0",
+    "mocha": "~3.3.0",
     "uglify-js": "~2.8.22"
   }
 }

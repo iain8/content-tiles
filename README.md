@@ -24,7 +24,7 @@ Or download the package and include the file at the end of your page:
 Once the DOM has been loaded you can initialise the library by calling `init()`.
 
 ```javascript
-ContentGrid.init({
+ContentTiles.init({
   // parameters (see below)
 });
 ```

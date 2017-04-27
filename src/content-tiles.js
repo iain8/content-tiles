@@ -197,21 +197,26 @@
     },
 
     /**
-     * Reduce the size of an element by the given amount
+     * Reduce the future size of an element by the given amount
      * 
-     * @param $el jQuery element
+     * @param el DOM element
      * @param amount int
      * 
-     * @return jQuery element
+     * @return DOM element
      */
     shrinkElement: function (el) {
       var height = getAttrAsFloat(el, 'data-height');
       var width = getAttrAsFloat(el, 'data-width');
 
-      var newHeight = height - 1;
+      if (height > 1) {
+        var newHeight = height - 1;
 
-      el.setAttribute('data-width', width * (newHeight / height));
-      el.setAttribute('data-height', newHeight);
+        el.setAttribute('data-width', width * (newHeight / height));
+        el.setAttribute('data-height', newHeight);
+      } else {
+        el.setAttribute('data-width', 0);
+        el.setAttribute('data-height', 0);
+      }
 
       return el;
     },
@@ -221,7 +226,6 @@
      */
     render: function (container, rows) {
       Array.prototype.forEach.call(container.getElementsByClassName(this.itemClass), function (el) {
-        //
         el.parentNode.removeChild(el);
       });
 
@@ -270,6 +274,6 @@
       return ContentTiles;
     });
   } else {
-    window.ContentGrid = ContentTiles;
+    window.ContentTiles = ContentTiles;
   }
 })();
