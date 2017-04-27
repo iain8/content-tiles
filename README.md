@@ -34,7 +34,6 @@ resized e.g. overlays (default: `[]`)
 
 ## Roadmap
 
-* Work on multiple containers (currently only the first matching the class name is used)
 * Add a `redraw()` method that removes content from rows and then recalculates the tiling 
 (useful for screen size or orientation changes)
 * Move away from using data-attrs to improve performance

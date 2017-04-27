@@ -32,7 +32,7 @@
 
   var ContentTiles = {
     // width of border around elements (px)
-    borderWidth: 0,
+    spacing: 0,
 
     // class on container element
     containerClass: 'content-tiles',
@@ -58,7 +58,7 @@
       // set up instance vars
       var opts = options || {};
 
-      this.borderWidth = opts.borderWidth || this.borderWidth;
+      this.spacing = opts.spacing || this.spacing;
       this.containerClass = opts.containerClass || this.containerClass;
       this.innerClasses = opts.innerClasses || this.innerClasses;
       this.itemClass = opts.itemClass || this.itemClass;
@@ -78,7 +78,9 @@
         var data = [];
         var maxWidth = container.offsetWidth;
 
+        // TODO: make non-instance these two
         this.targetHeight = getAttrAsInt(container, 'data-row-height');
+        this.spacing = getAttrAsInt(container, 'data-spacing') || this.spacing;
 
         var content = container.getElementsByClassName('content-item');
         var dataLength = content.length;
@@ -113,7 +115,7 @@
         var difference = maxWidth - this.getTotalWidth(rows[i]);
         var imageCount = rows[i].length;
 
-        if (imageCount > 1 && difference < this.borderWidth) {
+        if (imageCount > 1 && difference < this.spacing) {
           var offset = difference / imageCount;
           var rowsCount = rows[i].length;
 
@@ -191,7 +193,7 @@
         width += getAttrAsFloat(row[i], 'data-width');
       }
 
-      return width + ((row.length - 1) * this.borderWidth);
+      return width + ((row.length - 1) * this.spacing);
     },
 
     /**
