@@ -2,7 +2,8 @@
   "name": "content-tiles",
   "version": "1.0.0",
   "description": "Content tiling library",
-  "author": "Iain Buchanan (https://www.github.com/iain8",
+  "author": "Iain Buchanan (https://github.com/iain8)",
+  "homepage": "https://github.com/iain8/content-tiles",
   "main": "content-tiles.js",
   "scripts": {
     "build": "uglifyjs ./src/content-tiles.js -o ./dist/content-tiles.min.js -c",
