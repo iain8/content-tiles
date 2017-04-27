@@ -9,8 +9,8 @@
   /**
    * Get an attribute as an integer
    *
-   * @param {*} el Element on which to get attribute
-   * @param {*} attr Attribute name
+   * @param {Object} el Element on which to get attribute
+   * @param {string} attr Attribute name
    *
    * @return int Integer value of attribute
    */
@@ -21,8 +21,8 @@
   /**
    * Get an attribute as a float
    *
-   * @param {*} el Element on which to get attribute
-   * @param {*} attr Attribute name
+   * @param {Object} el Element on which to get attribute
+   * @param {string} attr Attribute name
    *
    * @return float Float value of attribute
    */
@@ -47,12 +47,12 @@
     rowClass: 'content-row',
 
     // target row height (px)
-    targetHeight: 400,
+    rowHeight: 400,
 
     /**
      * Initialise the content grid and draw it
      *
-     * @param options array Initialisation options for plugin
+     * @param {Object} options Initialisation options for plugin
      */
     init: function (options) {
       // set up instance vars
@@ -62,9 +62,7 @@
       this.containerClass = opts.containerClass || this.containerClass;
       this.innerClasses = opts.innerClasses || this.innerClasses;
       this.itemClass = opts.itemClass || this.itemClass;
-
-      // TODO: this is just getting overwritten right now
-      this.targetHeight = opts.rowHeight || this.targetHeight;
+      this.rowHeight = opts.rowHeight || this.rowHeight;
 
       var containers = document.getElementsByClassName(this.containerClass);
 
@@ -77,10 +75,8 @@
         var container = containers[i];
         var data = [];
         var maxWidth = container.offsetWidth;
-
-        // TODO: make non-instance these two
-        this.targetHeight = getAttrAsInt(container, 'data-row-height') || this.rowHeight;
-        this.spacing = getAttrAsInt(container, 'data-spacing') || this.spacing;
+        var rowHeight = getAttrAsInt(container, 'data-row-height') || this.rowHeight;
+        var spacing = getAttrAsInt(container, 'data-spacing') || this.spacing;
 
         var content = container.getElementsByClassName('content-item');
         var dataLength = content.length;
@@ -90,22 +86,25 @@
           var width = getAttrAsInt(content[j], 'data-width');
           var height = getAttrAsInt(content[j], 'data-height');
 
-          content[j].setAttribute('data-width', width * (this.targetHeight / height));
-          content[j].setAttribute('data-height', this.targetHeight);
+          content[j].setAttribute('data-width', width * (rowHeight / height));
+          content[j].setAttribute('data-height', rowHeight);
 
           data.push(content[j]);
         }
 
-        var rows = this.populate(container, data, maxWidth);
+        var rows = this.populate(container, data, maxWidth, spacing);
 
         this.render(container, rows);
       }
     },
 
     /**
-     * Populate content and adjust rows to fit
+     * Populate rows of content items
+     * 
+     * @param {Object} container
+     * @param {array} data asdadasd 
      */
-    populate: function (container, data, maxWidth) {
+    populate: function (container, data, maxWidth, spacing) {
       var rows = this.buildRows(data, maxWidth);
       var rowCount = rows.length;
 
@@ -115,7 +114,7 @@
         var difference = maxWidth - this.getTotalWidth(rows[i]);
         var imageCount = rows[i].length;
 
-        if (imageCount > 1 && difference < this.spacing) {
+        if (imageCount > 1 && difference < spacing) {
           var offset = difference / imageCount;
           var rowsCount = rows[i].length;
 
@@ -134,7 +133,10 @@
     /**
      * Build rows from content items
      *
-     * @return array Content organised into rows
+     * @param {array} data Array of content items
+     * @param {number} maxWidth Maximum width of a row
+     * 
+     * @return {array} Content organised into rows
      */
     buildRows: function (data, maxWidth) {
       var currentRow = 0;
@@ -163,8 +165,10 @@
     /**
      * Fit the images into a row
      * 
-     * @param array row
-     * @return array Row
+     * @param {array} row A row of content items
+     * @param {number} maxWidth Max width of a row
+     * 
+     * @return {array} Row of content items
      */
     fitImagesInRow: function (row, maxWidth) {
       var rowCount = row.length;
@@ -181,9 +185,9 @@
     /**
      * Calculate the total width of a row of items
      *
-     * @param array row A row of items
+     * @param {array} row A row of content items
      *
-     * @return int Width
+     * @return {number} Width of row
      */
     getTotalWidth: function (row) {
       var width = 0;
@@ -199,10 +203,9 @@
     /**
      * Reduce the future size of an element by the given amount
      * 
-     * @param el DOM element
-     * @param amount int
+     * @param {Object} el DOM element
      * 
-     * @return DOM element
+     * @return {Object} Shrunken DOM element
      */
     shrinkElement: function (el) {
       var height = getAttrAsFloat(el, 'data-height');
@@ -222,7 +225,10 @@
     },
 
     /**
-     * Possibly redundant render function!
+     * Remove the existing items and add the new rows to the DOM
+     * 
+     * @param {Object} container The containing div
+     * @param {array} rows Rows of content items
      */
     render: function (container, rows) {
       Array.prototype.forEach.call(container.getElementsByClassName(this.itemClass), function (el) {
