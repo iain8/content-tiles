@@ -64,7 +64,7 @@
       this.itemClass = opts.itemClass || this.itemClass;
 
       // TODO: this is just getting overwritten right now
-      this.targetHeight = opts.targetHeight || this.targetHeight;
+      this.targetHeight = opts.rowHeight || this.targetHeight;
 
       var containers = document.getElementsByClassName(this.containerClass);
 
@@ -79,7 +79,7 @@
         var maxWidth = container.offsetWidth;
 
         // TODO: make non-instance these two
-        this.targetHeight = getAttrAsInt(container, 'data-row-height');
+        this.targetHeight = getAttrAsInt(container, 'data-row-height') || this.rowHeight;
         this.spacing = getAttrAsInt(container, 'data-spacing') || this.spacing;
 
         var content = container.getElementsByClassName('content-item');

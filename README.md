@@ -7,13 +7,23 @@ Very deeply inspired by [automatic-image grid](https://github.com/beije/automati
 
 ## Installation
 
-TODO
+Install via npm:
+
+```bash
+npm install content-tiles
+```
+
+Or download the package and include the file at the end of your page:
+
+```html
+<script src="dist/content-tiles.min.js"></script>
+```
 
 ## Usage
 
 Once the DOM has been loaded you can initialise the library by calling `init()`.
 
-``` javascript
+```javascript
 ContentGrid.init({
   // parameters (see below)
 });
@@ -21,16 +31,23 @@ ContentGrid.init({
 
 ### Parameters
 
-* `borderWidth` - width of the border between content items in px (default: `10`)
+These can be passed to the `init()` method as a hash.
+
+* `spacing` - width of the border between content items in px (default: 0)
 * `containerClass` - CSS class of the container (default: `content-grid`)
-* `innerClasses` - CSS classes on elements inside the items that should also be explicitly 
-resized e.g. overlays (default: `[]`)
+* `innerClasses` - CSS classes on elements inside the items that should also be explicitly resized e.g. overlays (default: `[]`)
 * `itemClass` - CSS class of items in the container (default: `content-item`)
-* `targetHeight` - ideal height of rows of content in px (default: `400`)
+* `rowHeight` - ideal height of rows of content in px (default: `400`)
+
+The `spacing` and `target-height` can also be set as data attributes on the container.
+
+```html
+<div class="content-tiles spaced-tiles" data-row-height="200" data-spacing="20">
+```
 
 ## Example
 
-// TODO
+Check out the [examples page](https://iain8.github.io/content-tiles).
 
 ## Roadmap
 
