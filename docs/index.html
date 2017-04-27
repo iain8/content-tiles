@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>content-tiles demo</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css" integrity="sha256-itWEYdFWzZPBG78bJOOiQIn06QCgN/F0wMDcC4nOhxY=" crossorigin="anonymous">
+
+    <style>
+    .callout {
+      display: inline-block;
+      margin-bottom: 0;
+      overflow: hidden;
+    }
+
+    img {
+      vertical-align: top;
+    }
+
+    .spaced-tiles .content-item {
+      margin-right: 10px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="small-9 large-centered columns">
+        <h1>content-tiles demo</h1>
+
+        <p>This page shows some demos of the <a href="https://github.com/iain8/content-tiles">content-tiles.js</a> library. Please
+        see the <a href="https://github.com/iain8/content-tiles/blob/master/README.md">README</a> for full instructions.</p>
+
+        <br>
+
+        <h3>Images</h3>
+
+        <hr>
+
+        <div class="content-tiles" data-row-height="200">
+          <img src="http://www.placecage.com/700/600" class="content-item" data-height="600" data-width="800">
+          <img src="http://www.placecage.com/600/800" class="content-item" data-height="800" data-width="600">
+          <img src="http://www.placecage.com/900/600" class="content-item" data-height="600" data-width="800">
+          <img src="http://www.placecage.com/500/500" class="content-item" data-height="500" data-width="500">
+        </div>
+
+        <p>
+          A small selection of high quality images, fit into rows without affecting the aspect ratio.
+        </p>
+
+        <br>
+
+        <h3>Containers</h3>
+
+        <hr>
+
+        <div class="content-tiles" data-row-height="200">
+          <div class="content-item callout success" data-height="600" data-width="800">
+            <h4>Some content</h4>
+            <p>Blah blah</p>
+          </div>
+          <div class="content-item callout success" data-height="800" data-width="600"></div>
+          <div class="content-item callout success" data-height="600" data-width="800"></div>
+          <div class="content-item callout success" data-height="800" data-width="800"></div>
+        </div>
+
+        <p>Essentially anything with a specified width and height can be tiled.</p>
+
+        <br>
+
+        <h3>A mixture of images AND containers</h3>
+
+        <hr>
+
+        <div class="content-tiles" data-row-height="200">
+          <img src="http://www.placecage.com/700/600" class="content-item" data-height="600" data-width="800">
+          <div class="content-item callout success" data-height="600" data-width="800">
+            <h4>Some content</h4>
+            <p>Blah blah</p>
+          </div>
+          <img src="http://www.placecage.com/600/800" class="content-item" data-height="800" data-width="600">
+          <div class="content-item callout success" data-height="800" data-width="800"></div>
+          <img src="http://www.placecage.com/900/600" class="content-item" data-height="600" data-width="800">
+          <div class="content-item callout success" data-height="800" data-width="600"></div>
+          <img src="http://www.placecage.com/500/500" class="content-item" data-height="500" data-width="500">
+          <div class="content-item callout success" data-height="600" data-width="800"></div>
+        </div>
+
+        <p>
+          Some adjustment of CSS may be necessary, especially if you are working with a framework
+          (here <code>vertical-align: top</code> was added to the images and some margin removed
+          from the callouts).
+        </p>
+
+        <h3>Spacing</h3>
+
+        <hr>
+
+        <div class="content-tiles spaced-tiles" data-row-height="200" data-spacing="20">
+          <div class="content-item callout success" data-height="400" data-width="400"></div>
+          <div class="content-item callout success" data-height="400" data-width="400"></div>
+          <div class="content-item callout success" data-height="400" data-width="400"></div>
+          <div class="content-item callout success" data-height="400" data-width="400"></div>
+          <div class="content-item callout success" data-height="400" data-width="400"></div>
+          <div class="content-item callout success" data-height="400" data-width="400"></div>
+          <div class="content-item callout success" data-height="400" data-width="400"></div>
+          <div class="content-item callout success" data-height="400" data-width="400"></div>
+        </div>
+
+        <p>
+          Horizontal space between items can be defined using the <code>spacing</code> property or 
+          with the <code>data-spacing</code> attribute on your container. This is based on applying 
+          some border or padding to the items in the CSS.
+        </p>
+      </div>
+    </div>
+
+    <script src="../dist/content-tiles.min.js"></script>
+    <script>
+      ContentGrid.init();
+    </script>
+  </body>
+</html>
